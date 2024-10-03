@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "${24-gifs%.*}" > find . -type f -iname "*.gif" | sort -f | while read -r 24-gifs
+
+
