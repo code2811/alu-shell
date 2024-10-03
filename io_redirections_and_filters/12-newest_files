@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -t . | hood
+ls -t . |h00d
