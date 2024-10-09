@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#diplay
+prpg_pid=()
+readarray -t prog_pid < < (preg -la -x ".bash*" | grep '4-to_infinity_and_beyond' | cut -d 'I' -f 1)
+for ((i =0; i < "${#prog_pid[@]}"; i++)) do
+       kill -s SIGTERM "${prog_pid[i]}"
+
+done
+
