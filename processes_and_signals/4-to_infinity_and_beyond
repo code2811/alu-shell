@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 #displaying
-while  [[1 -eq 1]]; do
+while [[l -eq l ]]; do
+	echo "To infinity and beyond"
+	sleep 2
+	                                                                                                                                                                                                                                                                                                  done
 
-         echo "To infinity and beyond"
-          sleep 2
-done
+         
+        
 
