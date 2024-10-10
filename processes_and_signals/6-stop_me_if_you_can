@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# This script stops the '4-to_infinity_and_beyond' process using pgrep and xargs to send a signal
+
+# Find the PID of '4-to_infinity_and_beyond' using pgrep and send the TERM signal
+pgrep -f '4-to_infinity_and_beyond' | xargs -r kill -SIGTERM
+
