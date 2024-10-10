@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 #displaying
-while [[l -eq l ]]; do
-	echo "To infinity and beyond"
-	sleep 2
-	                                                                                                                                                                                                                                                                                                  done
 
-         
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+done
+
+
+	                                                                                                                                                                                                                                                                                                 i        
         
 
