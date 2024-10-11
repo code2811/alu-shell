@@ -1,17 +1,6 @@
-#!/bin/bash
+#!/bin/env bash
+#i love you
 
-# Create the PID file
 echo $$ > /var/run/myscript.pid
-
-# Trap SIGTERM, SIGINT, and SIGQUIT signals
-trap 'echo "I hate the kill command"; rm -f /var/run/myscript.pid; exit' SIGTERM
-trap 'echo "Y U no love me?!";' SIGINT
-trap 'rm -f /var/run/myscript.pid; exit' SIGQUIT
-
-# Infinite loop to display "To infinity and beyond"
-while true
-do
-    echo "To infinity and beyond"
-    sleep 2
-done
+clean__up='rm /var/run/myscript.pid; exist $?'
 
