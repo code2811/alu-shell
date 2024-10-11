@@ -1,6 +1,39 @@
-#!/bin/env bash
-#i love you
+#!/bin/bash
 
-echo $$ > /var/run/myscript.pid
-clean__up='rm /var/run/myscript.pid; exist $?'
+# Create the PID file containing the script's PID
+PID_FILE="/var/run/myscript.pid"
+echo $$ > "$PID_FILE"
+
+# Signal handling
+handle_sigterm() {
+    echo "I hate the kill command"
+    cleanup
+    exit 0
+}
+
+handle_sigint() {
+    echo "Y U no love me?!"
+}
+
+handle_sigquit() {
+    cleanup
+    exit 0
+}
+
+# Clean up by removing the PID file
+cleanup() {
+    rm -f "$PID_FILE"
+}
+
+# Trap signals
+trap handle_sigterm SIGTERM
+trap handle_sigint SIGINT
+trap handle_sigquit SIGQUIT
+
+# Infinite loop displaying the message
+while true; do
+    echo "To infinity and beyond"
+    sleep 1
+done
+
 
