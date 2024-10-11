@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Replace 'your_log_file.log' with the actual path to your Apache log file.
+awk '
+{
+    # Assuming the log format is: <ip> - - [<date>] "<request>" <status> <size>
+    ip = $1
+    http_code = $9  # Adjust this index based on the actual log format
+    key = ip " " http_code
+    count[key]++
+}
+END {
+    for (k in count) {
+        split(k, parts, " ")
+        print count[k], parts[1], parts[2]
+    }
+}' your_log_file.log | sort -nr | head -n 10
+
