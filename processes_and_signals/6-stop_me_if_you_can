@@ -1,6 +1,13 @@
-#!/usr/bin/env bash
-# This script stops the '4-to_infinity_and_beyond' process using pgrep and xargs to send a signal
+#!/bin/bash
 
-# Find the PID of '4-to_infinity_and_beyond' using pgrep and send the TERM signal
-pgrep -f '4-to_infinity_and_beyond' | xargs -r killall  -SIGTERM
+pid=$(pgrep -f 4-to_infinity_and_beyond)
+
+if [ -z "$pid" ]; then
+    echo "Process not found."
+    exit 1
+fi
+
+echo "Terminating process $pid..."
+echo "TERM" > /proc/$pid/fd/0
+
 
