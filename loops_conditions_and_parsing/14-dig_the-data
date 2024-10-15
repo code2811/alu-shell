@@ -1,9 +1,36 @@
 #!/usr/bin/env bash
-# This script parses the Apache access log, groups by IP and HTTP status code, and counts occurrences.
+# This script groups visitors by IP and HTTP status code from the Apache log file.
 
-# Use awk to process the log and sort by occurrences
-awk '{print $1, $9}' apache-access.log | 
-    awk '{count[$1, $2]++} END {for (ip_http in count) print count[ip_http], ip_http}' | 
-    sort -nr
+# Define the log file name
+LOG_FILE="apache-access.log"
+
+# Check if the log file exists and is readable
+if [[ ! -f "$LOG_FILE" ]]; then
+    echo "Log file does not exist."
+    exit 1
+fi
+
+# Use awk to parse the log and group occurrences
+awk '
+{
+    if ($1 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/) {
+        # Check for correct format by matching IP addresses
+        ip = $1
+        status_code = $9
+
+        if (status_code ~ /^[0-9]{3}$/) {
+            # Only consider valid HTTP status codes
+            count[ip, status_code]++
+        }
+    }
+} 
+END {
+    # Print occurrences in the required format
+    for (ip_http in count) {
+        split(ip_http, arr, SUBSEP)
+        print count[ip_http], arr[1], arr[2]
+    }
+}' "$LOG_FILE" | sort -nr
+
 
 
