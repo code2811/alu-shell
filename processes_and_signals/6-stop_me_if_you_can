@@ -1,9 +1,20 @@
 #!/bin/bash
-while true
-do
-    echo "To infinity and beyond"
-    sleep 1
-done
 
+PID=$(pgrep -f "4-to_infinity_and_beyond")
 
+if [ -z "$PID" ]; then
+    echo "No 4-to_infinity_and_beyond process found."
+    exit 1
+fi
+
+echo "Stopping process with PID: $PID"
+echo SIGSTOP > /proc/$PID/attr/current
+
+sleep 1
+
+if ps -p $PID > /dev/null; then
+    echo "Process $PID has been stopped."
+else
+    echo "Process $PID has been terminated."
+fi
 
