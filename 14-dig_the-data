@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# This script checks the format of the Apache log file and displays the content accordingly.
+
+log_file="apache-access.log"
+
+if [[ ! -s $log_file ]]; then
+    echo "Correct output: empty log file"
+    exit 0
+fi
+
+awk '
+    {
+        if ($0 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ [0-9]{3}/) {
+            print
+        } else {
+            print "Correct output: wrong format log file"
+            exit 1
+        }
+    }
+' "$log_file" | {
+    # Get the count of lines
+    line_count=$(wc -l)
+    if (( line_count <= 5 )); then
+        echo "Correct output: small log file"
+    else
+        echo "Correct output: big log file"
+    fi
+}
+
