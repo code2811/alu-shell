@@ -1,17 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+# This script stops the 4-to_infinity_and_beyond process if it is running.
+
+# Get the PID of the 4-to_infinity_and_beyond process
 PID=$(pgrep -f "4-to_infinity_and_beyond")
 
+# Check if the process is running
 if [ -z "$PID" ]; then
     echo "No 4-to_infinity_and_beyond process found."
     exit 1
 fi
 
+# Send SIGSTOP to the process
 echo "Stopping process with PID: $PID"
 echo SIGSTOP > /proc/$PID/attr/current
 
+# Wait a moment for the process to stop
 sleep 1
 
+# Verify the process status
 if ps -p $PID > /dev/null; then
     echo "Process $PID has been stopped."
 else
