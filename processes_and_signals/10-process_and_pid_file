@@ -1,20 +1,30 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# This script runs indefinitely, manages its own PID file, and handles signals gracefully.
 
-echo $$ > /var/run/myscript.pid
+# Define the PID file path
+PID_FILE="/var/run/myscript.pid"
 
+# Create the PID file containing the current script's PID
+echo $$ > "$PID_FILE"
+
+# Function to handle cleanup on exit
 cleanup() {
-    rm -f /var/run/myscript.pid
+    echo "Cleaning up..."
+    rm -f "$PID_FILE"
     exit 0
 }
 
-trap 'echo "I hate the kill command"; cleanup' SIGTERM
+# Trap signals and define their handlers
+trap 'echo "I hate the kill command";' SIGTERM
 trap 'echo "Y U no love me?!";' SIGINT
-trap 'cleanup' SIGQUIT
+trap cleanup SIGQUIT SIGTERM
 
+# Main loop that runs indefinitely
 while true; do
     echo "To infinity and beyond"
-    sleep 1
+    sleep 1  # Adding a sleep to avoid spamming the output too fast
 done
+
 
 
 
