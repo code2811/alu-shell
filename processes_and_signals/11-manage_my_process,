@@ -1,6 +1,51 @@
 #!/usr/bin/env bash
-#manage my files
-while [[ 1 -eq 1 ]]; do
-       echo "I am alive!" >>/tmp/my_process
-        sleep 2
-done
+
+# Path to PID file
+PID_FILE="/var/run/my_process.pid"
+
+# Function to start the process
+start_process() {
+    if [ -f "$PID_FILE" ]; then
+        echo "manage_my_process is already running."
+    else
+        ./manage_my_process &
+        echo $! > "$PID_FILE"
+        echo "manage_my_process started"
+    fi
+}
+
+# Function to stop the process
+stop_process() {
+    if [ -f "$PID_FILE" ]; then
+        PID=$(cat "$PID_FILE")
+        kill "$PID"
+        rm -f "$PID_FILE"
+        echo "manage_my_process stopped"
+    else
+        echo "manage_my_process is not running."
+    fi
+}
+
+# Function to restart the process
+restart_process() {
+    stop_process
+    start_process
+    echo "manage_my_process restarted"
+}
+
+# Main script logic based on arguments
+case "$1" in
+    start)
+        start_process
+        ;;
+    stop)
+        stop_process
+        ;;
+    restart)
+        restart_process
+        ;;
+    *)
+        echo "Usage: manage_my_process {start|stop|restart}"
+        ;;
+esac
+
