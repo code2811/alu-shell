@@ -1,8 +1,5 @@
 #!/bin/bash
-
-# Create a global variable
 export BEST="School"
-
 
 
 
