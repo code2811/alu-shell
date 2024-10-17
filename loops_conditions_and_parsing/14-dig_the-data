@@ -1,28 +1,9 @@
 #!/usr/bin/env bash
+# groups visitors by IP and HTTP status code, and displays this data.
+# Format: OCCURENCE_NUMBER IP HTTP_CODE, In list format
+#         Ordered from the greatest to the lowest number of occurrences
 
-# This script processes an Apache log file, groups visitors by IP and HTTP status code,
-# and displays the data in the format OCCURRENCE_NUMBER IP HTTP_CODE
-
-if [[ -z "$1" || ! -f "$1" ]]; then
-    echo "Correct output: wrong format log file"
-    exit 1
-fi
-
-if [[ ! -s "$1" ]]; then
-    echo "Correct output: empty log file"
-    exit 1
-fi
-
-line_count=$(awk 'END {print NR}' "$1")
-
-if [[ $line_count -le 10 ]]; then
-    echo "Correct output: small log file"
-else
-    echo "Correct output: big log file"
-fi
-
-awk '{count[$1, $9]++} 
-     END {for (i in count) {split(i, a, SUBSEP); print count[i], a[1], a[2]}}' "$1" | sort -nr
+awk '{print $1 " " $9}' <apache-access.log | sort | uniq -c | sort -gr
 
 
 
