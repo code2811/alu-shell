@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
-# Script to parse Apache log, group by IP and HTTP code, and sort by occurrences
 
-# Check if the log file exists and is not empty
-LOG_FILE="access.log"
-if [ ! -f "$LOG_FILE" ] || [ ! -s "$LOG_FILE" ]; then
-    exit 0
+# This script processes an Apache log file, groups visitors by IP and HTTP status code,
+# and displays the data in the format OCCURRENCE_NUMBER IP HTTP_CODE
+
+# Check if a file is provided as an argument
+if [[ -z "$1" || ! -f "$1" ]]; then
+    echo "Usage: $0 <logfile>"
+    exit 1
 fi
 
-# Use awk to extract IP ($1) and HTTP code ($9), group by both, count occurrences, and sort the output
-awk '{ if ($9 ~ /^[0-9]{3}$/) print $1, $9 }' "$LOG_FILE" | \
-awk '{counts[$0]++} END {for (item in counts) print counts[item], item}' | \
-sort -nr
+# Use awk to parse the log file, group by IP and HTTP code, and sort by occurrences
+awk '{count[$1, $9]++} 
+     END {for (i in count) {split(i, a, SUBSEP); print count[i], a[1], a[2]}}' "$1" | sort -nr
+
 
 
