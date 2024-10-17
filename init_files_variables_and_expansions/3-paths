@@ -1,13 +1,2 @@
 #!/bin/bash
-
-# Get the PATH variable
-path_variable=$PATH
-
-# Split the PATH variable by colon and count the number of entries
-# Use the tr command to replace ':' with newline, then use wc to count lines
-num_directories=$(echo "$path_variable" | tr ':' '\n' | wc -l)
-
-# Output the count
-echo "$num_directories"
-
-
+echo "$PATH" | tr ':' '\n' | grep -v '^$' | wc -l
