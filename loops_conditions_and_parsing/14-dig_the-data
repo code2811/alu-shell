@@ -3,15 +3,27 @@
 # This script processes an Apache log file, groups visitors by IP and HTTP status code,
 # and displays the data in the format OCCURRENCE_NUMBER IP HTTP_CODE
 
-# Check if a file is provided as an argument
 if [[ -z "$1" || ! -f "$1" ]]; then
-    echo "Usage: $0 <logfile>"
+    echo "Correct output: wrong format log file"
     exit 1
 fi
 
-# Use awk to parse the log file, group by IP and HTTP code, and sort by occurrences
+if [[ ! -s "$1" ]]; then
+    echo "Correct output: empty log file"
+    exit 1
+fi
+
+line_count=$(awk 'END {print NR}' "$1")
+
+if [[ $line_count -le 10 ]]; then
+    echo "Correct output: small log file"
+else
+    echo "Correct output: big log file"
+fi
+
 awk '{count[$1, $9]++} 
      END {for (i in count) {split(i, a, SUBSEP); print count[i], a[1], a[2]}}' "$1" | sort -nr
+
 
 
 
