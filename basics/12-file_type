@@ -1,3 +1,3 @@
 #!/bin/bash
-file /tmpt/iamafile
+file /tmp/iamafile
 
